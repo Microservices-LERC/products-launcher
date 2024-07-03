@@ -53,3 +53,32 @@ services:
       - PORT=3002
       - NATS_SERVERS=nats-server://nats-server:4222
       - DATABASE_URL=postgres://postgres:postgres@orders-db:5432/orders
+
+  payments-ms:
+    container_name: payments-ms
+    build: './payments-ms'
+    ports:
+      - "3003:3003"
+    volumes:
+      - ./payments-ms/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=${PAYMENTS_MS_PORT}
+      - NATS_SERVERS=nats-server://nats-server:4222
+      - STRIPE_SECRET=${STRIPE_SECRET}
+      - STRIPE_SUCCESS_URL=${STRIPE_SUCCESS_URL}
+      - STRIPE_CANCEL_URL=${STRIPE_CANCEL_URL}
+      - STRIPE_ENDPOINT_SECRET=${STRIPE_ENDPOINT_SECRET}
+
+  auth-ms:
+    build: './auth-ms'
+    ports:
+      - "3004:3004"
+    volumes:
+      - ./auth-ms/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=3004
+      - NATS_SERVERS=nats-server://nats-server:4222
+      - DATABASE_URL=${AUTH_DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
