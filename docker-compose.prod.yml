@@ -72,7 +72,7 @@ services:
     build: 
       context: ./auth-ms
       dockerfile: dockerfile.prod
-    image: us-central1-docker.pkg.dev/tienda-microservices-428223/image-registry/auth-ms-prod
+    image: us-central1-docker.pkg.dev/tienda-microservices-428223/image-registry/auth-ms
     environment:
       - PORT=3000
       - NATS_SERVERS=nats-server://nats-server:4222
